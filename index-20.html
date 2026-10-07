@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6c4cff">
+<title>پرواز در تماشاخانه | فارسی پنجم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#6c4cff;--purple2:#8e6cff;--pink:#ff4f9a;--orange:#ff9b42;--cyan:#23c9c9;
+  --green:#25b97f;--red:#ef5350;--ink:#2b2450;--muted:#706a88;--white:#fff;
+  --glass:rgba(255,255,255,.78);--shadow:0 18px 45px rgba(57,35,122,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Vazirmatn,Tahoma,sans-serif;color:var(--ink)}
+body{
+  overflow-x:hidden;
+  background:linear-gradient(125deg,#f8ecff,#fff3f8,#e9fbff,#f5efff);
+  background-size:400% 400%;animation:bg 18s ease infinite;
+}
+@keyframes bg{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+button,input{font:inherit}
+button{border:0;cursor:pointer}
+.hidden{display:none!important}
+.screen{min-height:100vh;padding:24px 16px;display:none;position:relative}
+.screen.active{display:flex;align-items:center;justify-content:center}
+.card{
+  width:min(1120px,100%);background:var(--glass);border:1px solid rgba(255,255,255,.75);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:30px;
+  box-shadow:var(--shadow);padding:28px;position:relative;overflow:hidden;
+}
+.card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+background:rgba(142,108,255,.13);left:-90px;top:-100px}
+.title{font-size:clamp(2.4rem,8vw,5.5rem);line-height:1.05;margin:10px 0;font-weight:900;
+background:linear-gradient(90deg,var(--purple),var(--pink),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent;
+filter:drop-shadow(0 5px 18px rgba(108,76,255,.2));animation:glow 2.4s ease-in-out infinite alternate}
+@keyframes glow{to{filter:drop-shadow(0 8px 26px rgba(255,79,154,.35))}}
+.subtitle{font-size:1.1rem;color:var(--muted);line-height:1.9}
+.teacher{display:inline-flex;gap:9px;align-items:center;padding:10px 18px;border-radius:999px;
+background:linear-gradient(135deg,#fff,#fff4fb);box-shadow:0 8px 20px rgba(255,79,154,.14);font-weight:800}
+.teacher b{color:var(--pink)}
+.hero{text-align:center;padding:34px 18px}
+.hero .book{font-size:4rem;filter:drop-shadow(0 8px 12px rgba(0,0,0,.12));animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-9px) rotate(2deg)}}
+.input-wrap{max-width:480px;margin:25px auto 15px;text-align:right}
+.input-wrap label{font-weight:800;display:block;margin:0 0 8px}
+.input-wrap input{width:100%;padding:15px 18px;border:2px solid #e6ddff;border-radius:18px;background:#fff;
+outline:none;transition:.2s}
+.input-wrap input:focus{border-color:var(--purple);box-shadow:0 0 0 5px rgba(108,76,255,.1)}
+.actions{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:15px}
+.btn{padding:14px 22px;border-radius:17px;color:#fff;font-weight:800;box-shadow:0 8px 0 rgba(55,32,120,.16),0 14px 25px rgba(78,49,160,.16);
+transition:transform .18s cubic-bezier(.2,.8,.2,1),filter .18s;animation:pulse 3s ease-in-out infinite}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.04)}.btn:active{transform:translateY(2px);box-shadow:0 4px 0 rgba(55,32,120,.16)}
+.btn.primary{background:linear-gradient(135deg,var(--purple),var(--pink))}
+.btn.secondary{background:linear-gradient(135deg,var(--cyan),#4f8cff)}
+.btn.orange{background:linear-gradient(135deg,var(--orange),#ff6b6b)}
+@keyframes pulse{50%{box-shadow:0 8px 0 rgba(55,32,120,.12),0 16px 30px rgba(78,49,160,.22)}}
+.lesson-card{max-height:calc(100vh - 48px);overflow:auto}
+.section-title{font-size:1.45rem;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.lesson-intro{line-height:2;background:#fff;border-radius:20px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.lesson-parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.lesson-part{padding:17px;border-radius:19px;background:linear-gradient(135deg,#fff,#f8f4ff);border:1px solid #eee7ff;line-height:1.9}
+.table-wrap{overflow:auto;border-radius:18px;box-shadow:0 7px 18px rgba(0,0,0,.05)}
+.antonyms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;
+  background:linear-gradient(135deg,#fff7fb,#f6f3ff);padding:12px;border-radius:20px}
+.antonym{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:9px 10px;
+  background:#fff;border:1px solid #eee5ff;border-radius:14px;box-shadow:0 4px 10px rgba(70,40,130,.06);
+  font-size:.9rem;font-weight:800}
+.antonym .a{color:#6c4cff}.antonym .b{color:#e84d83}.antonym .arr{color:#aaa;font-size:.8rem}
+@media(max-width:700px){.antonyms-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px}.antonym{font-size:.82rem;padding:8px 8px}}
+
+table{width:100%;border-collapse:collapse;min-width:520px;background:#fff}
+th,td{padding:12px 13px;border-bottom:1px solid #eee;text-align:right;vertical-align:top}
+th{background:linear-gradient(135deg,#efeaff,#ffeaf4);font-weight:900}
+tr:last-child td{border-bottom:0}
+.game-screen{padding:0;align-items:stretch!important;overflow:hidden}
+.game-shell{width:100%;height:100vh;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.hud{padding:10px 12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);z-index:10;box-shadow:0 6px 22px rgba(0,0,0,.08)}
+.hud-box{padding:8px 12px;border-radius:14px;background:#fff;font-weight:800;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.hearts{letter-spacing:2px}.heart.lost{filter:grayscale(1);opacity:.22}
+.progress{height:9px;background:#e8e3f5;border-radius:999px;overflow:hidden;flex:1;min-width:150px}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));transition:width .35s}
+.icon-btn{width:42px;height:42px;border-radius:13px;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.phase{font-weight:900;color:var(--purple)}
+.flight{position:relative;flex:1;min-height:0;overflow:hidden;background:
+linear-gradient(#7bd8ff 0%,#b9edff 56%,#e7f9ff 100%);touch-action:manipulation;user-select:none}
+.cloud{position:absolute;width:160px;height:52px;background:rgba(255,255,255,.82);border-radius:80px;filter:blur(.2px)}
+.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%}
+.cloud:before{width:72px;height:72px;right:27px;bottom:7px}.cloud:after{width:54px;height:54px;right:83px;bottom:2px}
+.c1{top:15%;right:-180px;animation:cloud 17s linear infinite}.c2{top:31%;right:-250px;animation:cloud 24s linear 4s infinite;transform:scale(.7)}
+.c3{top:7%;right:-200px;animation:cloud 28s linear 8s infinite;transform:scale(.55)}
+@keyframes cloud{to{transform:translateX(-125vw) scale(var(--s,1))}}
+.mountains{position:absolute;bottom:0;left:0;right:0;height:150px;background:#7ab98d;
+clip-path:polygon(0 80%,12% 48%,22% 76%,35% 34%,46% 74%,60% 42%,72% 77%,84% 38%,100% 72%,100% 100%,0 100%)}
+.mountains:after{content:"";position:absolute;inset:40px 0 0;background:#62a77d;opacity:.75;
+clip-path:polygon(0 90%,18% 58%,31% 83%,48% 48%,64% 82%,79% 55%,100% 80%,100% 100%,0 100%)}
+#flightCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bird-svg{position:absolute;z-index:4;width:84px;height:84px;left:0;top:0;pointer-events:none;
+  transform-origin:50% 50%;filter:drop-shadow(0 8px 8px rgba(72,44,28,.22));
+  will-change:transform,left,top}
+.bird-svg .wing{transform-box:fill-box;transform-origin:center;animation:wingFlap .24s ease-in-out infinite alternate}
+.bird-svg.dazed{animation:dazed 1s ease-in-out}
+.bird-svg.dazed .wing{animation:none}
+.bird-svg.dazed .eye-pupil{transform:translateY(3px)}
+@keyframes wingFlap{from{transform:rotate(-14deg) scaleY(.95)}to{transform:rotate(18deg) scaleY(1.05)}}
+@keyframes dazed{0%,100%{filter:drop-shadow(0 8px 8px rgba(72,44,28,.22))}50%{filter:drop-shadow(0 0 16px rgba(255,91,120,.8)) rotate(-7deg)}}
+
+.flight-top{position:absolute;top:14px;left:14px;right:14px;z-index:3;display:flex;gap:10px;align-items:center}
+.timer{height:13px;flex:1;background:rgba(255,255,255,.6);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.8)}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#25c77b,#ffbd4a,#ff5b78);transform-origin:right}
+.flight-hint{position:absolute;bottom:22px;right:50%;transform:translateX(50%);background:rgba(255,255,255,.75);
+padding:8px 14px;border-radius:999px;font-weight:700;z-index:3}
+.question-area{display:none;flex:1;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#fff5fb,#f1efff)}
+.q-card{width:min(820px,100%);background:rgba(255,255,255,.88);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+.q-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.q-number{font-weight:900;color:var(--purple)}
+.q-timer{height:12px;background:#eee8fa;border-radius:99px;overflow:hidden;margin:13px 0 18px}
+.q-timer i{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));transform-origin:right}
+.question{font-size:clamp(1.15rem,3vw,1.55rem);font-weight:900;line-height:1.9;margin:10px 0 18px}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.option{min-height:62px;padding:13px 15px;text-align:right;border-radius:17px;background:#fff;border:2px solid #e8e2f7;
+font-weight:700;transition:.18s;box-shadow:0 6px 14px rgba(0,0,0,.04)}
+.option:hover{transform:translateY(-2px);border-color:#b9a9ff}.option.correct{background:#dcfaed;border-color:#2cc58a;color:#13714f}
+.option.wrong{background:#ffe0e0;border-color:#f26b6b;color:#9d2727}
+.option:disabled{cursor:default}
+.explain{margin-top:15px;padding:14px 16px;border-radius:16px;background:#f6f3ff;line-height:1.9;display:none}
+.next-row{text-align:center;margin-top:15px}
+.shake{animation:shake .55s}.flash{animation:flash .45s}
+@keyframes shake{20%,60%{transform:translateX(7px)}40%,80%{transform:translateX(-7px)}}
+@keyframes flash{50%{filter:brightness(1.45)}}
+.end-card{text-align:center;max-height:calc(100vh - 48px);overflow:auto}
+.score-big{font-size:4rem;font-weight:900;color:var(--purple);margin:5px}
+.report{margin-top:22px;text-align:right}
+.error-item{background:#fff;border-radius:18px;padding:15px;margin:10px 0;border-right:5px solid var(--red);line-height:1.9}
+.error-item .student{color:#d52e39;font-weight:800}.error-item .right{color:#129463;font-weight:800}
+.modal{position:fixed;inset:0;background:rgba(29,18,65,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.show{display:flex}.modal-box{width:min(450px,100%);background:#fff;border-radius:25px;padding:25px;text-align:center;box-shadow:var(--shadow)}
+.small{font-size:.9rem;color:var(--muted)}
+@media(max-width:700px){
+  .card{padding:19px;border-radius:24px}.hero{padding:20px 8px}
+  .options{grid-template-columns:1fr}.flight{min-height:calc(100vh - 120px)}
+  .hud{gap:6px}.hud-box{font-size:.88rem;padding:7px 9px}.progress{order:5;flex-basis:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<section id="startScreen" class="screen active">
+  <div class="card hero">
+    <div class="book">📚</div>
+    <div class="small">فارسی پنجم دبستان • درس اول «تماشاخانه»</div>
+    <h1 class="title">پرواز در تماشاخانه</h1>
+    <p class="subtitle">در یک ماجراجویی شاد، واژه‌ها و نکته‌های درس را مرور کن، ستاره بگیر و به پرسش‌ها پاسخ بده!</p>
+    <div class="teacher">👩‍🏫 آموزگار: <b>خانم مرادنژاد</b></div>
+    <div class="input-wrap">
+      <label for="studentName">نام دانش‌آموز</label>
+      <input id="studentName" maxlength="30" autocomplete="name" placeholder="نام خودت را بنویس...">
+    </div>
+    <div class="actions">
+      <button class="btn secondary" id="lessonBtn">📖 مطالعه درس‌نامه</button>
+      <button class="btn primary" id="startBtn">🎮 شروع بازی (۲۰ سؤال از بانک ۱۳۱تایی)</button>
+    </div>
+  </div>
+</section>
+
+<section id="lessonScreen" class="screen">
+ <div class="card lesson-card">
+   <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+    <div><h2 style="margin:0">📖 درس‌نامهٔ «تماشاخانه»</h2><div class="small">مرور آموزشی برای آمادگی بازی • بانک ۱۳۱ پرسش متنوع</div></div>
+    <button class="btn primary" id="lessonBack">🏠 بازگشت</button>
+   </div>
+
+   <h3 class="section-title">🌟 ۱. دربارهٔ درس</h3>
+   <div class="lesson-intro">
+     درس «تماشاخانه» با نگاه دقیق به زیبایی‌ها و شگفتی‌های آفرینش پیوند دارد. در این درس، دانش‌آموز
+     با دقّت در پدیده‌های اطراف، توصیف زیبایی‌ها، مقایسه، تأمل و توجه به واژه‌های تازه تمرین می‌کند.
+     هنگام خواندن متن، باید به معنی واژه‌ها، ارتباط جمله‌ها و پیام کلی نوشته توجه کنیم.
+   </div>
+
+   <h3 class="section-title">🔎 ۲. بخش‌های مهم درس</h3>
+   <div class="lesson-parts">
+     <div class="lesson-part">👀 <b>تماشا و مشاهده:</b> با دقت به پدیده‌های اطراف نگاه کنیم و ویژگی‌های آن‌ها را ببینیم.</div>
+     <div class="lesson-part">💭 <b>تأمل:</b> فقط دیدن کافی نیست؛ دربارهٔ آنچه می‌بینیم فکر کنیم و شگفتی‌هایش را دریابیم.</div>
+     <div class="lesson-part">📝 <b>توصیف:</b> ویژگی‌های چیزها را با واژه‌های مناسب و جمله‌های روشن بیان کنیم.</div>
+     <div class="lesson-part">🌱 <b>پیام:</b> آفرینش سرشار از زیبایی و شگفتی است و توجه و اندیشیدن ما را بیشتر می‌کند.</div>
+   </div>
+
+   <h3 class="section-title">🧠 ۳. واژه‌های جدید و معنی آن‌ها</h3>
+   <div class="table-wrap"><table><thead><tr><th>واژه</th><th>معنی</th></tr></thead><tbody>
+   <tr><td>تماشاخانه</td><td>جای تماشا؛ محل دیدن و مشاهده</td></tr>
+   <tr><td>سرشار</td><td>پر، لبریز</td></tr><tr><td>شگفتی‌ها</td><td>چیزهای بسیار عجیب و حیرت‌آور</td></tr>
+   <tr><td>پدیده</td><td>چیزی که پدید آمده و دیده می‌شود</td></tr><tr><td>لطیف</td><td>نرم، ظریف، دل‌نشین</td></tr>
+   <tr><td>عجیب</td><td>شگفت، غیرعادی</td></tr><tr><td>تماشا</td><td>نگاه کردن با دقت و لذت</td></tr>
+   <tr><td>درنگ</td><td>مکث، تأخیر</td></tr><tr><td>مقایسه کنیم</td><td>دو یا چند چیز را با هم بسنجیم</td></tr>
+   <tr><td>سر به فلک کشیده</td><td>بسیار بلند و مرتفع</td></tr><tr><td>تأمل</td><td>فکر و اندیشهٔ دقیق</td></tr>
+   <tr><td>عالمان</td><td>دانشمندان، دانشوران</td></tr><tr><td>کردار</td><td>رفتار، عمل</td></tr>
+   <tr><td>گوارا</td><td>خوشایند، دلپذیر؛ خوش‌طعم</td></tr><tr><td>نگاشته</td><td>نوشته، نوشته‌شده</td></tr>
+   <tr><td>موضوع</td><td>درباره‌ای که سخن یا نوشته دربارهٔ آن است</td></tr><tr><td>آفرینش</td><td>خلقت، پدید آوردن</td></tr>
+   <tr><td>شکننده</td><td>چیزی که زود می‌شکند</td></tr><tr><td>سنگلاخ</td><td>زمین پر از سنگ و ناهموار</td></tr>
+   <tr><td>سردرمی‌آورد</td><td>متوجه می‌شود، می‌فهمد</td></tr>
+   </tbody></table></div>
+
+   <h3 class="section-title">👨‍👩‍👧‍👦 ۴. هم‌خانواده‌ها</h3>
+   <div class="table-wrap"><table><thead><tr><th>واژه</th><th>هم‌خانواده</th></tr></thead><tbody>
+   <tr><td>لطیف</td><td>لطف، الطاف</td></tr><tr><td>عجیب</td><td>عجب، عجایب</td></tr>
+   <tr><td>آفرینش</td><td>آفریدن، آفریدگار</td></tr><tr><td>عالم</td><td>علم، عالِم، عالمان</td></tr>
+   <tr><td>عمیق</td><td>عمق، اعماق</td></tr><tr><td>توصیف</td><td>وصف، موصوف</td></tr>
+   <tr><td>فصل</td><td>فصول</td></tr>
+   </tbody></table></div>
+
+   <h3 class="section-title">↔️ ۵. متضادها</h3>
+   <div class="antonyms-grid"><div class="antonym"><span class="a">لطیف</span><span class="arr">↔</span><span class="b">خشن</span></div><div class="antonym"><span class="a">نو</span><span class="arr">↔</span><span class="b">کهنه</span></div><div class="antonym"><span class="a">درنگ</span><span class="arr">↔</span><span class="b">عجله</span></div><div class="antonym"><span class="a">کهن</span><span class="arr">↔</span><span class="b">جدید</span></div><div class="antonym"><span class="a">ساده</span><span class="arr">↔</span><span class="b">سخت</span></div><div class="antonym"><span class="a">زیبا</span><span class="arr">↔</span><span class="b">زشت</span></div><div class="antonym"><span class="a">سرد</span><span class="arr">↔</span><span class="b">گرم</span></div><div class="antonym"><span class="a">پاکی</span><span class="arr">↔</span><span class="b">ناپاکی</span></div><div class="antonym"><span class="a">آرام</span><span class="arr">↔</span><span class="b">نا‌آرام</span></div><div class="antonym"><span class="a">نرم</span><span class="arr">↔</span><span class="b">زبر</span></div><div class="antonym"><span class="a">شاداب</span><span class="arr">↔</span><span class="b">غمگین</span></div><div class="antonym"><span class="a">نازک</span><span class="arr">↔</span><span class="b">کلفت</span></div><div class="antonym"><span class="a">خواب</span><span class="arr">↔</span><span class="b">بیدار</span></div><div class="antonym"><span class="a">خشک</span><span class="arr">↔</span><span class="b">خیس</span></div><div class="antonym"><span class="a">روشنایی</span><span class="arr">↔</span><span class="b">تاریکی</span></div><div class="antonym"><span class="a">گرما</span><span class="arr">↔</span><span class="b">سرما</span></div><div class="antonym"><span class="a">هستی</span><span class="arr">↔</span><span class="b">نیستی</span></div><div class="antonym"><span class="a">بخندد</span><span class="arr">↔</span><span class="b">بگرید</span></div></div>
+
+   <div class="actions"><button class="btn primary" id="lessonPlay">🎮 برو به بازی</button></div>
+ </div>
+</section>
+
+<section id="gameScreen" class="screen game-screen">
+ <div class="game-shell">
+  <div class="hud">
+    <div class="hud-box phase" id="phaseLabel">✈️ مرحلهٔ پرواز</div>
+    <div class="hud-box hearts" id="heartBox">❤️❤️❤️</div>
+    <div class="hud-box">⭐ <span id="score">۰</span></div>
+    <div class="hud-box" id="questionCounter">سؤال ۰ از ۲۰</div>
+    <div class="progress"><i id="mainProgress"></i></div>
+    <button class="icon-btn" id="soundBtn" title="قطع/وصل صدا">🔊</button>
+    <button class="icon-btn" id="pauseBtn" title="توقف">⏸️</button>
+  </div>
+
+  <div id="flightStage" class="flight">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+    <div class="mountains"></div>
+    <canvas id="flightCanvas"></canvas>
+    <svg id="birdSprite" class="bird-svg" viewBox="0 0 100 100" aria-label="پرندهٔ بازی">
+      <g class="bird-body">
+        <ellipse cx="50" cy="57" rx="30" ry="31" fill="#FFD83D"/>
+        <ellipse cx="39" cy="73" rx="11" ry="7" fill="#F6C72F" opacity=".9"/>
+        <ellipse cx="61" cy="73" rx="11" ry="7" fill="#F6C72F" opacity=".9"/>
+      </g>
+      <g class="wing" style="transform-origin:31px 55px">
+        <ellipse cx="28" cy="56" rx="11" ry="22" fill="#FFC62F" transform="rotate(-22 28 56)"/>
+      </g>
+      <g class="wing" style="transform-origin:69px 55px;animation-delay:-.12s">
+        <ellipse cx="72" cy="56" rx="11" ry="22" fill="#FFC62F" transform="rotate(22 72 56)"/>
+      </g>
+      <ellipse cx="39" cy="46" rx="13" ry="14" fill="#fff"/>
+      <ellipse cx="61" cy="46" rx="13" ry="14" fill="#fff"/>
+      <circle class="eye-pupil" cx="41" cy="48" r="6" fill="#28233D"/>
+      <circle class="eye-pupil" cx="59" cy="48" r="6" fill="#28233D"/>
+      <circle cx="39" cy="45" r="2.2" fill="#fff"/>
+      <circle cx="57" cy="45" r="2.2" fill="#fff"/>
+      <path d="M43 58 L57 58 L50 70 Z" fill="#FF8A3D"/>
+      <path d="M50 17 L56 30 L67 25 L63 39 L50 33 L37 39 L33 25 L44 30 Z" fill="#FF6B6B"/>
+      <path d="M39 83 Q34 91 31 94 M61 83 Q66 91 69 94" stroke="#FF8A3D" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M29 94 L34 94 M66 94 L71 94" stroke="#FF8A3D" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <div class="flight-top">
+      <span class="hud-box">پرواز: <b id="flightTime">۱۰</b> ثانیه</span>
+      <div class="timer"><i id="flightTimer"></i></div>
+    </div>
+    <div class="flight-hint">برای پرش، روی صفحه بزن یا لمس کن ✨</div>
+  </div>
+
+  <div id="questionArea" class="question-area">
+    <div class="q-card">
+      <div class="q-head"><span class="q-number" id="qNumber">سؤال ۱ از ۲۰</span><span class="hud-box">⏱️ <b id="questionTime">۶۰</b></span></div>
+      <div class="q-timer"><i id="questionTimer"></i></div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="options"></div>
+      <div class="explain" id="explain"></div>
+      <div class="next-row"><button class="btn primary hidden" id="nextBtn">🚀 ادامه</button></div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<section id="endScreen" class="screen">
+ <div class="card end-card">
+  <div style="font-size:4rem">🏆</div><h2 style="margin:5px">آفرین <span id="endName"></span>!</h2>
+  <div class="small">بازی به پایان رسید</div>
+  <div class="score-big" id="finalScore">۰</div>
+  <div class="small">امتیاز نهایی</div>
+  <div class="report"><h3>📋 گزارش اشتباهات</h3><div id="mistakes"></div></div>
+  <div class="actions"><button class="btn primary" id="restartBtn">🔄 بازی دوباره</button><button class="btn secondary" id="endLessonBtn">📖 درس‌نامه</button></div>
+ </div>
+</section>
+
+<div id="pauseModal" class="modal"><div class="modal-box">
+ <h2>⏸️ بازی متوقف است</h2><p class="subtitle">هر وقت آماده بودی، ادامه بده.</p>
+ <button class="btn primary" id="resumeBtn">▶️ ادامه بازی</button>
+</div></div>
+
+<script>
+'use strict';
+
+/* ---------- ابزارهای عمومی ---------- */
+const faDigits = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const $ = id => document.getElementById(id);
+const screens = ['startScreen','lessonScreen','gameScreen','endScreen'];
+function showScreen(id){ screens.forEach(s=>$(s).classList.toggle('active',s===id)); window.scrollTo(0,0); }
+
+const TOTAL_QUESTIONS = 20;
+
+const state = {
+  name:'', score:0, hearts:3, qIndex:0, questions:[], mistakes:[],
+  phase:'flight', sound:true, paused:false, questionLocked:false,
+  audio:null, bgTimer:null
+};
+
+/* ---------- بانک بزرگ و متنوع سؤال‌ها ---------- */
+const bank = [
+{q:'«سرشار» یعنی چه؟',o:['خالی','پر و لبریز','ناهموار','کم‌نور'],a:1,e:'سرشار یعنی پر، لبریز و آکنده.'},
+{q:'«لطیف» به کدام معنی نزدیک‌تر است؟',o:['نرم و ظریف','بسیار سخت','تاریک','پرهیاهو'],a:0,e:'لطیف یعنی نرم، ظریف و دل‌نشین.'},
+{q:'مخالف «لطیف» کدام است؟',o:['خشن','زیبا','گوارا','شاداب'],a:0,e:'متضاد لطیف، خشن است.'},
+{q:'هم‌خانوادهٔ «لطیف» کدام است؟',o:['لطف','لطافت‌خانه','لطفان','لطیفه‌گر'],a:0,e:'لطف و الطاف از واژه‌های هم‌خانوادهٔ لطیف هستند.'},
+{q:'«عجیب» یعنی چه؟',o:['آشنا و معمولی','شگفت و غیرعادی','کوتاه','گوارا'],a:1,e:'عجیب یعنی شگفت، غیرعادی و حیرت‌آور.'},
+{q:'هم‌خانوادهٔ «عجیب» کدام است؟',o:['عجب','عجله','عجیبک','عاج'],a:0,e:'عجب و عجایب هم‌خانوادهٔ عجیب‌اند.'},
+{q:'مخالف «نو» کدام است؟',o:['پاک','کهنه','نرم','آرام'],a:1,e:'نو در برابر کهنه قرار می‌گیرد.'},
+{q:'«تماشا» یعنی چه؟',o:['دویدن','نگاه کردن با دقت و لذت','نوشتن','پنهان شدن'],a:1,e:'تماشا یعنی نگاه کردن و مشاهده کردن، معمولاً با دقت و لذت.'},
+{q:'«درنگ» به چه معناست؟',o:['مکث و تأخیر','شتاب','شادی','بلندی'],a:0,e:'درنگ یعنی مکث و تأخیر.'},
+{q:'مخالف «درنگ» کدام است؟',o:['تأمل','عجله','آرامش','توصیف'],a:1,e:'عجله در برابر درنگ قرار دارد.'},
+{q:'«پدیده» چیست؟',o:['چیزی که پدید آمده و دیده می‌شود','فقط یک کتاب','یک رفتار نادرست','یک واژهٔ مخالف'],a:0,e:'پدیده به چیزی گفته می‌شود که پدید آمده و قابل مشاهده است.'},
+{q:'عبارت «سر به فلک کشیده» چه مفهومی دارد؟',o:['بسیار کوتاه','بسیار بلند','خیلی نرم','کاملاً خیس'],a:1,e:'این عبارت برای چیزی بسیار بلند و مرتفع به کار می‌رود.'},
+{q:'«تأمل» یعنی چه؟',o:['فکر و اندیشهٔ دقیق','خوابیدن','خندیدن','دویدن'],a:0,e:'تأمل یعنی با دقت فکر کردن و اندیشیدن.'},
+{q:'«عالمان» یعنی چه؟',o:['دانشمندان','کودکان','بازرگانان','ورزشکاران'],a:0,e:'عالمان جمع عالم به معنی دانشمندان و دانشوران است.'},
+{q:'هم‌خانوادهٔ «عالم» کدام است؟',o:['علم','علیم‌دوست','عالمک','علامت‌زن'],a:0,e:'علم و عالِم و عالمان هم‌خانواده‌اند.'},
+{q:'«کردار» یعنی چه؟',o:['رفتار و عمل','رنگ','اندازه','صدا'],a:0,e:'کردار یعنی رفتار یا عمل انسان.'},
+{q:'«گوارا» در این درس بیشتر چه مفهومی دارد؟',o:['دلپذیر و خوشایند','بسیار بلند','شکننده','تاریک'],a:0,e:'گوارا می‌تواند به معنی خوشایند، دلپذیر یا خوش‌طعم باشد.'},
+{q:'«نگاشته» یعنی چه؟',o:['نوشته یا نوشته‌شده','شکسته','پنهان','خیس'],a:0,e:'نگاشته به چیزی گفته می‌شود که نوشته شده است.'},
+{q:'«موضوع» یعنی چه؟',o:['درباره‌ای که سخن دربارهٔ آن است','صدای بلند','مخالف یک واژه','یک رنگ'],a:0,e:'موضوع، چیزی است که نوشته یا سخن دربارهٔ آن است.'},
+{q:'هم‌خانوادهٔ «آفرینش» کدام است؟',o:['آفریدگار','آفرین','فرآیند','آفرینک'],a:0,e:'آفریدن و آفریدگار با آفرینش هم‌خانواده‌اند.'},
+{q:'«شکننده» یعنی چه؟',o:['چیزی که زود می‌شکند','چیزی که خیلی گرم است','چیزی که می‌درخشد','چیزی که می‌دود'],a:0,e:'شکننده یعنی دارای قابلیت شکستن یا زودشکن.'},
+{q:'«سنگلاخ» به چه زمینی گفته می‌شود؟',o:['زمین پر از سنگ و ناهموار','زمین کاملاً نرم','زمین پوشیده از برف','زمین آبی'],a:0,e:'سنگلاخ زمینی پر از سنگ و ناهموار است.'},
+{q:'«سردرمی‌آورد» در جمله یعنی چه؟',o:['می‌فهمد و متوجه می‌شود','می‌خوابد','می‌دود','می‌شکند'],a:0,e:'سردرآوردن در این کاربرد یعنی فهمیدن و متوجه شدن.'},
+{q:'مخالف «کهن» کدام است؟',o:['جدید','خشک','سنگین','نا‌آرام'],a:0,e:'کهن یعنی قدیمی و مخالف آن جدید است.'},
+{q:'مخالف «ساده» کدام است؟',o:['سخت','آرام','پاک','نازک'],a:0,e:'در این مجموعه، ساده در برابر سخت قرار گرفته است.'},
+{q:'مخالف «زیبا» کدام است؟',o:['لطیف','زشت','شاداب','گوارا'],a:1,e:'متضاد زیبا، زشت است.'},
+{q:'مخالف «سرد» کدام است؟',o:['گرم','کهن','خشک','آرام'],a:0,e:'گرم متضاد سرد است.'},
+{q:'مخالف «پاکی» کدام است؟',o:['روشنایی','ناپاکی','تأمل','هستی'],a:1,e:'ناپاکی در برابر پاکی قرار دارد.'},
+{q:'مخالف «آرام» کدام است؟',o:['نا‌آرام','نرم','لطیف','گوارا'],a:0,e:'نا‌آرام متضاد آرام است.'},
+{q:'مخالف «نرم» کدام است؟',o:['زبر','لطیف','شاداب','زیبا'],a:0,e:'زبر در برابر نرم قرار دارد.'},
+{q:'مخالف «شاداب» کدام است؟',o:['غمگین','گرم','تازه','روشن'],a:0,e:'در فهرست درس، شاداب در برابر غمگین آمده است.'},
+{q:'مخالف «نازک» کدام است؟',o:['کلفت','لطیف','کهن','گوارا'],a:0,e:'کلفت متضاد نازک است.'},
+{q:'مخالف «خواب» کدام است؟',o:['بیدار','تاریک','خیس','عمیق'],a:0,e:'بیدار متضاد خواب است.'},
+{q:'مخالف «خشک» کدام است؟',o:['خیس','سرد','نرم','پاک'],a:0,e:'خیس متضاد خشک است.'},
+{q:'مخالف «روشنایی» کدام است؟',o:['تاریکی','گرما','زیبایی','هستی'],a:0,e:'تاریکی متضاد روشنایی است.'},
+{q:'مخالف «گرما» کدام است؟',o:['سرما','درنگ','خشن','ساده'],a:0,e:'سرما در برابر گرما قرار دارد.'},
+{q:'مخالف «هستی» کدام است؟',o:['نیستی','آفرینش','علم','فصل'],a:0,e:'نیستی متضاد هستی است.'},
+{q:'مخالف «بخندد» کدام است؟',o:['بگرید','ببیند','بخواند','بدود'],a:0,e:'بگرید متضاد بخندد است.'},
+{q:'هم‌خانوادهٔ «عمیق» کدام است؟',o:['عمق','عجیب','عالم','اعلام'],a:0,e:'عمق و اعماق با عمیق هم‌خانواده‌اند.'},
+{q:'هم‌خانوادهٔ «توصیف» کدام است؟',o:['وصف','تأسف','صفت‌گذاری','صدا'],a:0,e:'وصف و موصوف با توصیف هم‌خانواده‌اند.'},
+{q:'هم‌خانوادهٔ «فصل» کدام است؟',o:['فصول','فاصله','فصلت','فصلان'],a:0,e:'فصول جمع واژهٔ فصل و از هم‌خانواده‌های مورد نظر درس است.'},
+{q:'پیام اصلی درس «تماشاخانه» بیشتر به کدام موضوع نزدیک است؟',o:['بی‌توجهی به محیط','دیدن و اندیشیدن به شگفتی‌های آفرینش','مسابقهٔ ورزشی','ساختن یک وسیله'],a:1,e:'درس ما را به مشاهده، توجه، تأمل و دیدن زیبایی‌های آفرینش دعوت می‌کند.'},
+{q:'وقتی چیزی را «توصیف» می‌کنیم، چه کاری انجام می‌دهیم؟',o:['ویژگی‌هایش را با واژه‌های مناسب بیان می‌کنیم','آن را پنهان می‌کنیم','آن را می‌شکنیم','فقط نامش را می‌گوییم'],a:0,e:'توصیف یعنی بیان ویژگی‌ها و مشخصات یک چیز یا پدیده.'},
+{q:'کدام کار به «تأمل» نزدیک‌تر است؟',o:['فکر کردن با دقت دربارهٔ یک پدیده','دویدن بدون توجه','خوابیدن','پاک کردن نوشته'],a:0,e:'تأمل یعنی اندیشیدن دقیق و با حوصله.'},
+{q:'اگر نویسنده چند پدیده را کنار هم بگذارد و ویژگی‌هایشان را بسنجد، چه کاری انجام داده است؟',o:['مقایسه','درنگ','نگاشتن','خندیدن'],a:0,e:'سنجیدن ویژگی‌های چند چیز در کنار هم، مقایسه نام دارد.'},
+{q:'کدام گزینه یک «پدیده» را بهتر نشان می‌دهد؟',o:['رنگین‌کمان در آسمان','فقط یک دستور','یک شمارهٔ صفحه','نام یک دانش‌آموز'],a:0,e:'رنگین‌کمان یک پدیدهٔ طبیعی قابل مشاهده است.'},
+{q:'کدام گزینه معنی «سرشار از شگفتی» را بهتر می‌رساند؟',o:['پر از چیزهای حیرت‌آور','کاملاً خالی','بسیار خشک','بدون موضوع'],a:0,e:'سرشار یعنی پر و لبریز؛ شگفتی یعنی چیز حیرت‌آور.'},
+{q:'اگر چیزی «گوارا» باشد، کدام توصیف مناسب‌تر است؟',o:['دلپذیر و خوشایند','بسیار خشن','تاریک و ترسناک','شکننده و خشک'],a:0,e:'گوارا یعنی خوشایند و دلپذیر و در مورد خوراکی‌ها خوش‌طعم.'},
+{q:'کدام جمله کاربرد درست «درنگ» را نشان می‌دهد؟',o:['او بدون درنگ پاسخ داد.','او درنگ را خورد.','درنگ بسیار بلند بود.','درنگ را پوشید.'],a:0,e:'«بدون درنگ» یعنی بدون مکث و تأخیر.'},
+{q:'در عبارت «درختان سر به فلک کشیده‌اند»، منظور چیست؟',o:['درختان بسیار بلند هستند.','درختان خوابیده‌اند.','درختان کوتاه‌اند.','درختان خیس‌اند.'],a:0,e:'سر به فلک کشیده یعنی بسیار بلند.'},
+{q:'کدام گزینه نشان می‌دهد یک دانش‌آموز با دقت به درس توجه کرده است؟',o:['واژه‌ها را بررسی می‌کند و دربارهٔ پیام متن فکر می‌کند.','فقط صفحه را ورق می‌زند.','بدون خواندن پاسخ می‌دهد.','همهٔ واژه‌ها را نادیده می‌گیرد.'],a:0,e:'توجه به واژه‌ها و پیام متن، نشانهٔ مطالعهٔ دقیق است.'},
+{q:'کدام گزینه هم «هم‌خانواده» را درست نشان می‌دهد و هم معنی واژه‌ها را حفظ می‌کند؟',o:['علم ← عالم','سنگ ← سنگین‌دل','زیبا ← زیبایی‌پرست','نو ← نویی‌کردن'],a:0,e:'علم و عالم از یک خانوادهٔ واژگانی هستند.'},
+{q:'چرا شناخت متضادها برای خواندن متن مفید است؟',o:['به فهم دقیق‌تر معنی واژه‌ها کمک می‌کند.','باعث حذف واژه‌ها می‌شود.','فقط برای نقاشی کاربرد دارد.','معنی جمله را پنهان می‌کند.'],a:0,e:'شناخت واژه‌های متضاد باعث درک بهتر تفاوت معنایی واژه‌ها می‌شود.'},
+{q:'کدام گزینه ترتیب مناسبی برای یادگیری واژه‌های یک درس است؟',o:['خواندن واژه، فهم معنی، دیدن کاربرد و مرور','حذف واژه، حدس بی‌دلیل، فراموشی','فقط حفظ کردن شکل واژه','نادیده گرفتن جمله'],a:0,e:'فهم معنی و کاربرد واژه در کنار مرور، یادگیری را عمیق‌تر می‌کند.'}
+
+,
+{q:'کدام واژه با «لطف» هم‌خانواده است؟',o:['لطیف','لطمه','لخت','لنگ'],a:0,e:'لطف و لطیف از یک خانوادهٔ واژگانی هستند.'},
+{q:'کدام واژه با «عجب» هم‌خانواده است؟',o:['عجیب','عجله','عجین','علاج'],a:0,e:'عجب و عجیب هم‌خانواده‌اند.'},
+{q:'کدام گزینه هم‌خانوادهٔ «آفریدگار» است؟',o:['آفرینش','آفتاب','آفت','آرام'],a:0,e:'آفرینش و آفریدگار از خانوادهٔ «آفریدن» هستند.'},
+{q:'کدام گزینه با «عمق» هم‌خانواده است؟',o:['عمیق','عمل','عمر','عالم'],a:0,e:'عمیق و عمق هم‌خانواده‌اند.'},
+{q:'کدام گزینه با «وصف» هم‌خانواده است؟',o:['توصیف','وقف','صفحه','نصف'],a:0,e:'وصف و توصیف هم‌خانواده‌اند.'},
+{q:'کدام گزینه با «فصول» هم‌خانواده است؟',o:['فصل','فاصله','فصاحت','فساد'],a:0,e:'فصول جمع فصل و از واژه‌های هم‌خانوادهٔ آن است.'},
+{q:'کدام واژه در درس به معنی «دانایان» آمده است؟',o:['عالمان','کردار','موضوع','نگاشته'],a:0,e:'عالمان یعنی دانایان و دانشمندان.'},
+{q:'کدام واژه به معنی «محل نمایش» است؟',o:['تماشاخانه','سنگلاخ','آفرینش','درنگ'],a:0,e:'تماشاخانه یعنی محل نمایش.'},
+{q:'کدام گزینه «سرشار» را درست در جمله به کار برده است؟',o:['باغ از گل‌های زیبا سرشار بود.','سرشار را پوشید.','او سرشار را شکست.','سرشار بسیار کوتاه بود.'],a:0,e:'سرشار برای چیزی که پر و لبریز است به کار می‌رود.'},
+{q:'کدام جمله کاربرد درست «تأمل» را نشان می‌دهد؟',o:['دربارهٔ شگفتی‌های طبیعت تأمل کرد.','تأمل را نوشید.','تأمل از سنگ ساخته شد.','تأمل را پوشید.'],a:0,e:'تأمل یعنی اندیشیدن و فکر کردن با دقت.'},
+{q:'کدام جمله کاربرد درست «گوارا» را دارد؟',o:['آب خنک و گوارا نوشیدیم.','سنگ گوارا دوید.','گوارا بسیار بلند بود.','گوارا را پوشید.'],a:0,e:'گوارا یعنی خوشایند و در مورد نوشیدنی یا خوراکی، خوش‌طعم.'},
+{q:'کدام گزینه دربارهٔ «سنگلاخ» درست است؟',o:['زمینی پر از سنگ و ناهموار است.','آبی بسیار سرد است.','گیاهی لطیف است.','محل نمایش است.'],a:0,e:'سنگلاخ زمین پر از سنگ و ناهموار است.'},
+{q:'در متن، علف‌های سبز چگونه توصیف شده‌اند؟',o:['نرم و شکننده','سخت و کلفت','تیره و خشک','گرم و زبر'],a:0,e:'در متن، علف‌های سبز نرم و شکننده توصیف شده‌اند.'},
+{q:'کدام مورد در درس به عنوان موضوعی برای فکر کردن معرفی شده است؟',o:['آب گوارا','یک مسابقه','یک بازی','یک ساختمان'],a:0,e:'آب گوارایی که زندگی به آن وابسته است، موضوعی برای فکر کردن معرفی شده است.'},
+{q:'بر اساس متن، برای شناخت بهتر پدیده‌ها چه کنیم؟',o:['آن‌ها را خوب تماشا کنیم و درباره‌شان بیندیشیم.','از کنارشان بی‌تفاوت بگذریم.','فقط نامشان را حفظ کنیم.','آن‌ها را پنهان کنیم.'],a:0,e:'متن بر تماشا، اندیشیدن، مقایسه و مطالعهٔ طبیعت تأکید دارد.'},
+{q:'دانشمندان و عالمان برای شناخت جهان چه کاری انجام می‌دهند؟',o:['پرسش می‌کنند و برای پاسخ جست‌وجو می‌کنند.','هیچ پرسشی نمی‌کنند.','فقط نقاشی می‌کشند.','از طبیعت دور می‌شوند.'],a:0,e:'در متن آمده است که پرسش و جست‌وجوی پاسخ از کارهای دانشمندان و عالمان است.'},
+{q:'چرا بعضی رفتارهای خود را بدون پرسش انجام می‌دهیم؟',o:['چون از روی عادت انجام می‌دهیم.','چون همیشه آن‌ها را مقایسه می‌کنیم.','چون آن‌ها را نمی‌شناسیم.','چون خیلی عجیب‌اند.'],a:0,e:'متن می‌گوید برخی رفتارها و کارها را از روی عادت انجام می‌دهیم.'},
+{q:'کدام گزینه به پیام کلی درس نزدیک‌تر است؟',o:['با دقت ببینیم، فکر کنیم و شگفتی‌های آفرینش را بشناسیم.','هیچ‌وقت دربارهٔ طبیعت فکر نکنیم.','فقط معنی واژه‌ها را حفظ کنیم.','از پدیده‌های اطراف دور شویم.'],a:0,e:'پیام کلی درس بر مشاهده، تأمل و شناخت شگفتی‌های آفرینش تأکید دارد.'},
+{q:'اگر دو پدیده را کنار هم بگذاریم و ویژگی‌هایشان را بسنجیم، چه می‌کنیم؟',o:['مقایسه','درنگ','نگاشتن','بخندیدن'],a:0,e:'سنجیدن و بررسی شباهت‌ها و تفاوت‌ها، مقایسه است.'},
+{q:'کدام واژه با «زبر» متضاد است؟',o:['نرم','کهن','گرما','نیستی'],a:0,e:'نرم متضاد زبر است.'},
+{q:'کدام واژه با «غمگین» متضاد است؟',o:['شاداب','خشن','خشک','کهن'],a:0,e:'در فهرست متضادهای درس، شاداب در برابر غمگین آمده است.'},
+{q:'کدام واژه با «تاریکی» متضاد است؟',o:['روشنایی','سرما','خواب','سنگلاخ'],a:0,e:'روشنایی متضاد تاریکی است.'},
+{q:'کدام واژه با «نیستی» متضاد است؟',o:['هستی','کهنه','نازک','ساده'],a:0,e:'هستی متضاد نیستی است.'},
+{q:'کدام واژه با «کلفت» متضاد است؟',o:['نازک','سرد','شاداب','گوارا'],a:0,e:'نازک متضاد کلفت است.'},
+{q:'کدام واژه با «خیس» متضاد است؟',o:['خشک','لطیف','عجیب','کهن'],a:0,e:'خشک متضاد خیس است.'},
+
+  // پرسش‌های استخراج‌شده از فایل مرجع ارسالی
+
+  // معنی واژه
+  { q:'معنی واژه‌ی «سرشار» چیست؟', o:['لبریز و پُر','خالی و تهی','تنگ و کم','شکسته و خراب'], c:'لبریز و پُر', e:'سرشار = لبریز، پُر، مالامال' },
+  { q:'معنی واژه‌ی «لطیف» چیست؟', o:['نرم و زیبا','خشن و زبر','سخت و محکم','تیره و تاریک'], c:'نرم و زیبا', e:'لطیف = نرم، زیبا، ظریف' },
+  { q:'معنی واژه‌ی «عجیب» چیست؟', o:['شگفت‌آور','معمولی و ساده','ترسناک','بی‌ارزش'], c:'شگفت‌آور', e:'عجیب = شگفت‌آور، غریب' },
+  { q:'معنی واژه‌ی «درنگ» چیست؟', o:['توقف و سکون','حرکت و شتاب','دویدن','پرواز'], c:'توقف و سکون', e:'درنگ = توقف، مکث، سکون' },
+  { q:'معنی واژه‌ی «تأمل» چیست؟', o:['اندیشه و فکر','شتاب و عجله','خواب و استراحت','ترس و هراس'], c:'اندیشه و فکر', e:'تأمل = اندیشه، فکر، درنگ' },
+  { q:'معنی واژه‌ی «عالمان» چیست؟', o:['دانایان','نادانان','کودکان','بیماران'], c:'دانایان', e:'عالمان: جمع عالم، دانشمندان، دانایان' },
+  { q:'معنی واژه‌ی «کردار» چیست؟', o:['عمل و رفتار','گفتار و سخن','پندار و خیال','دیدار و ملاقات'], c:'عمل و رفتار', e:'کردار = عمل، رفتار، کار' },
+  { q:'معنی واژه‌ی «گوارا» چیست؟', o:['دلچسب و مطبوع','تلخ و ناگوار','سرد و بی‌مزه','شور و تند'], c:'دلچسب و مطبوع', e:'گوارا = دلچسب، مطبوع، خوشمزه' },
+  { q:'معنی واژه‌ی «نگاشته» چیست؟', o:['نوشته','خوانده','شنیده','گفته'], c:'نوشته', e:'نگاشته = نوشته' },
+  { q:'معنی واژه‌ی «موضوع» چیست؟', o:['مطلب','کتاب','دفتر','قلم'], c:'مطلب', e:'موضوع = مطلب، عنوان' },
+  { q:'معنی واژه‌ی «آفرینش» چیست؟', o:['خلقت و آفریدن','نابودی و از بین رفتن','خواب و استراحت','خنده و شادی'], c:'خلقت و آفریدن', e:'آفرینش = خلقت، آفریدن، به وجود آمدن' },
+  { q:'معنی واژه‌ی «شکننده» چیست؟', o:['نازک و ظریف','ضخیم و کلفت','سنگین و محکم','تیره و مات'], c:'نازک و ظریف', e:'شکننده = نازک، ظریف، شکستنی' },
+  { q:'معنی واژه‌ی «سنگلاخ» چیست؟', o:['زمینی که در آن سنگ فراوان است','زمینی که در آن گل فراوان است','زمینی که در آن آب فراوان است','زمینی که در آن درخت فراوان است'], c:'زمینی که در آن سنگ فراوان است', e:'سنگلاخ = زمین سخت و پُر از سنگ' },
+  { q:'معنی واژه‌ی «پدیده» چیست؟', o:['چیز تازه','چیز قدیمی','چیز ترسناک','چیز بی‌ارزش'], c:'چیز تازه', e:'پدیده = هر چیز تازه‌ای که به وجود می‌آید' },
+  { q:'معنی واژه‌ی «تماشاخانه» چیست؟', o:['جایی که چیزی نمایش داده می‌شود','جایی برای خرید','جایی برای خواب','جایی برای ورزش'], c:'جایی که چیزی نمایش داده می‌شود', e:'تماشاخانه = محلی که در آن نمایش اجرا می‌شود' },
+
+  // مترادف
+  { q:'مترادف واژه‌ی «سرشار» کدام است؟', o:['پُر','کم','خالی','اندک'], c:'پُر', e:'سرشار = پُر، لبریز، مالامال' },
+  { q:'مترادف واژه‌ی «لطیف» کدام است؟', o:['نرم','سخت','خشن','زبر'], c:'نرم', e:'لطیف = نرم، ظریف، ملایم' },
+  { q:'مترادف واژه‌ی «عجیب» کدام است؟', o:['شگفت‌آور','عادی','ساده','معمولی'], c:'شگفت‌آور', e:'عجیب = شگفت‌آور، غریب' },
+  { q:'مترادف واژه‌ی «کردار» کدام است؟', o:['رفتار','گفتار','پندار','دیدار'], c:'رفتار', e:'کردار = عمل، رفتار' },
+  { q:'مترادف واژه‌ی «عالمان» کدام است؟', o:['دانشمندان','نادانان','کودکان','کشاورزان'], c:'دانشمندان', e:'عالمان = دانشمندان، دانایان' },
+  { q:'مترادف واژه‌ی «درنگ» کدام است؟', o:['توقف','حرکت','شتاب','عجله'], c:'توقف', e:'درنگ = توقف، سکون' },
+  { q:'مترادف واژه‌ی «تأمل» کدام است؟', o:['اندیشه','خیال','خواب','بیداری'], c:'اندیشه', e:'تأمل = اندیشه، فکر' },
+  { q:'مترادف واژه‌ی «آفرینش» کدام است؟', o:['خلقت','نابودی','هستی‌نیستی','خاموشی'], c:'خلقت', e:'آفرینش = خلقت، آفریدن' },
+
+  // متضاد
+  { q:'متضاد واژه‌ی «لطیف» کدام است؟', o:['خشن','نرم','زیبا','ظریف'], c:'خشن', e:'لطیف ≠ خشن' },
+  { q:'متضاد واژه‌ی «نو» کدام است؟', o:['کهنه','جدید','تازه','شکفته'], c:'کهنه', e:'نو ≠ کهنه' },
+  { q:'متضاد واژه‌ی «کهن» کدام است؟', o:['جدید','قدیمی','پیر','فرسوده'], c:'جدید', e:'کهن (قدیمی) ≠ جدید (نو)' },
+  { q:'متضاد واژه‌ی «ساده» کدام است؟', o:['سخت','راحت','آسان','سبک'], c:'سخت', e:'ساده ≠ سخت (پیچیده)' },
+  { q:'متضاد واژه‌ی «زیبا» کدام است؟', o:['زشت','قشنگ','خوب','دوست‌داشتنی'], c:'زشت', e:'زیبا ≠ زشت' },
+  { q:'متضاد واژه‌ی «سرد» کدام است؟', o:['گرم','سوزان','خنک','یخ'], c:'گرم', e:'سرد ≠ گرم' },
+  { q:'متضاد واژه‌ی «پاکی» کدام است؟', o:['ناپاکی','پاکیزگی','تمیزی','نظافت'], c:'ناپاکی', e:'پاکی ≠ ناپاکی (پلیدی)' },
+  { q:'متضاد واژه‌ی «آرام» کدام است؟', o:['نا‌آرام','ساکن','بی‌حرکت','آسوده'], c:'نا‌آرام', e:'آرام ≠ نا‌آرام' },
+  { q:'متضاد واژه‌ی «نرم» کدام است؟', o:['زبر','لطیف','ملایم','ظریف'], c:'زبر', e:'نرم ≠ زبر' },
+  { q:'متضاد واژه‌ی «شاداب» کدام است؟', o:['غمگین','شاد','خندان','سرحال'], c:'غمگین', e:'شاداب ≠ غمگین' },
+  { q:'متضاد واژه‌ی «نازک» کدام است؟', o:['کلفت','باریک','ظریف','لطیف'], c:'کلفت', e:'نازک ≠ کلفت' },
+  { q:'متضاد واژه‌ی «خواب» کدام است؟', o:['بیدار','استراحت','چرت','رؤیا'], c:'بیدار', e:'خواب ≠ بیدار' },
+  { q:'متضاد واژه‌ی «خشک» کدام است؟', o:['خیس','سفت','محکم','سرد'], c:'خیس', e:'خشک ≠ خیس' },
+  { q:'متضاد واژه‌ی «روشنایی» کدام است؟', o:['تاریکی','نور','درخشش','روشنی'], c:'تاریکی', e:'روشنایی ≠ تاریکی' },
+  { q:'متضاد واژه‌ی «گرما» کدام است؟', o:['سرما','حرارت','داغی','آتش'], c:'سرما', e:'گرما ≠ سرما' },
+  { q:'متضاد واژه‌ی «هستی» کدام است؟', o:['نیستی','وجود','جهان','کائنات'], c:'نیستی', e:'هستی ≠ نیستی (نابودی)' },
+  { q:'متضاد واژه‌ی «درنگ» کدام است؟', o:['عجله','توقف','سکون','آرامش'], c:'عجله', e:'درنگ (توقف) ≠ عجله (شتاب)' },
+
+  // هم‌خانواده
+  { q:'هم‌خانواده‌ی واژه‌ی «لطیف» کدام است؟', o:['لطف','لطمه','لخت','لکه'], c:'لطف', e:'لطیف: لطف، الطاف، لطافت' },
+  { q:'هم‌خانواده‌ی واژه‌ی «عجیب» کدام است؟', o:['عجایب','عجله','عجین','عجیبه'], c:'عجایب', e:'عجیب: عجب، عجایب، تعجب' },
+  { q:'هم‌خانواده‌ی واژه‌ی «آفرینش» کدام است؟', o:['آفریدن','آفتاب','آفت','آفر'], c:'آفریدن', e:'آفرینش: آفریدن، آفریدگار، آفریده' },
+  { q:'هم‌خانواده‌ی واژه‌ی «عالم» کدام است؟', o:['علم','عمل','عمر','عمه'], c:'علم', e:'عالم: علم، عالمین، معلم' },
+  { q:'هم‌خانواده‌ی واژه‌ی «عمیق» کدام است؟', o:['عمق','عمر','عمل','عمه'], c:'عمق', e:'عمیق: عمق، اعماق، تعمیق' },
+  { q:'هم‌خانواده‌ی واژه‌ی «توصیف» کدام است؟', o:['وصف','نصف','صنف','صف'], c:'وصف', e:'توصیف: وصف، موصوف' },
+  { q:'هم‌خانواده‌ی واژه‌ی «فصل» کدام است؟', o:['فصول','فصاحت','فاصله','فساد'], c:'فصول', e:'فصل: فصول (جمع فصل)' },
+
+  // درک مطلب
+  { q:'چرا عالم «تماشاخانه‌ی شگفتی‌های آفرینش» است؟', o:['چون پر از پدیده‌های شگفت‌انگیز است','چون سینما دارد','چون بزرگ است','چون تاریک است'], c:'چون پر از پدیده‌های شگفت‌انگیز است', e:'زیرا پر از پدیده‌های زیبا و شگفت‌انگیز است' },
+  { q:'یکی از راه‌های شناخت عالم چیست؟', o:['مطالعه در طبیعت و تأمل','تماشای تلویزیون','بازی کردن','خوابیدن'], c:'مطالعه در طبیعت و تأمل', e:'مطالعه در طبیعت و تأمل در پدیده‌ها راه شناخت است' },
+  { q:'علف‌های نازک و لطیف از کجا سر در می‌آورند؟', o:['از میان سنگلاخ','از میان آب','از میان آتش','از میان خاک نرم'], c:'از میان سنگلاخ', e:'طبق متن درس، علف‌ها از میان سنگلاخ سر در می‌آورند' },
+  { q:'ما بعضی کارها را از چه روی انجام می‌دهیم؟', o:['از روی عادت','از روی ترس','از روی شادی','از روی اجبار'], c:'از روی عادت', e:'طبق متن، برخی رفتارها را از روی عادت انجام می‌دهیم' },
+  { q:'چرا نویسنده بعد از «نگاشته» از «می‌نگارد» استفاده کرده؟', o:['برای نشان دادن استمرار آفرینش','برای طولانی شدن متن','اشتباه بوده','برای قافیه'], c:'برای نشان دادن استمرار آفرینش', e:'«می‌نگارد» نشان‌دهنده‌ی استمرار آفرینش است' },
+
+];
+
+/* ---------- صدا با Web Audio API ---------- */
+function ensureAudio(){
+  if(!state.audio){
+    const C=window.AudioContext||window.webkitAudioContext;
+    if(C) state.audio=new C();
+  }
+  if(state.audio && state.audio.state==='suspended') state.audio.resume();
+}
+function tone(freq,dur=.12,type='sine',gain=.045,when=0){
+  if(!state.sound)return;
+  ensureAudio(); if(!state.audio)return;
+  const a=state.audio,t=a.currentTime+when,o=a.createOscillator(),g=a.createGain();
+  o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(gain,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.02);
+}
+function flapSound(){tone(190,.06,'triangle',.025);tone(280,.05,'triangle',.018,.045)}
+function starSound(){tone(660,.08,'sine',.05);tone(880,.11,'sine',.045,.08);tone(1100,.13,'sine',.035,.16)}
+function correctSound(){tone(523,.08,'sine',.045);tone(659,.08,'sine',.045,.08);tone(784,.14,'sine',.05,.16)}
+function wrongSound(){tone(420,.1,'sawtooth',.035);tone(250,.22,'sawtooth',.04,.09)}
+function explosionSound(){
+  if(!state.sound)return; ensureAudio(); if(!state.audio)return;
+  const a=state.audio,buffer=a.createBuffer(1,a.sampleRate*.35,a.sampleRate),d=buffer.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
+  const src=a.createBufferSource(),filter=a.createBiquadFilter(),g=a.createGain();
+  filter.type='lowpass';filter.frequency.value=900;g.gain.value=.16;src.buffer=buffer;src.connect(filter).connect(g).connect(a.destination);src.start();
+}
+function musicStart(){
+  if(!state.sound)return; ensureAudio(); if(!state.audio||state.bgTimer)return;
+  const notes=[261.63,329.63,392,523.25,392,329.63];
+  let i=0; state.bgTimer=setInterval(()=>{if(!state.paused&&state.phase==='question')tone(notes[i++%notes.length],.13,'sine',.012)},900);
+}
+function musicStop(){if(state.bgTimer){clearInterval(state.bgTimer);state.bgTimer=null}}
+
+/* ---------- بازی پرواز: Canvas ---------- */
+const canvas=$('flightCanvas'),ctx=canvas.getContext('2d');
+let flight={running:false,start:0,last:0,bird:{x:0,y:0,vy:0,r:34,blink:0,face:'normal'},items:[],particles:[],spawn:0,stars:0,bombs:0};
+function resizeCanvas(){const r=canvas.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.floor(r.width*d));canvas.height=Math.max(1,Math.floor(r.height*d));ctx.setTransform(d,0,0,d,0,0)}
+window.addEventListener('resize',()=>{resizeCanvas();if(flight.running)updateBirdSVG(flight.bird)});
+function W(){return canvas.clientWidth} function H(){return canvas.clientHeight}
+function resetFlight(){
+  $('flightStage').style.display='block';
+  $('questionArea').style.display='none';
+  resizeCanvas(); flight.running=true;flight.start=performance.now();flight.last=flight.start;flight.items=[];flight.particles=[];
+  flight.spawn=0;flight.stars=0;flight.bombs=0;
+  flight.bird={x:Math.max(70,W()*.23),y:H()*.42,vy:0,r:34,blink:0,face:'normal'};
+  $('phaseLabel').textContent='✈️ مرحلهٔ پرواز';
+  $('flightTime').textContent='۱۰';$('flightTimer').style.width='100%';
+  $('birdSprite').classList.remove('dazed');
+  updateBirdSVG(flight.bird);
+  requestAnimationFrame(flightLoop);
+}
+function jump(){if(!flight.running||state.paused)return;ensureAudio();flight.bird.vy=-510;flight.bird.face='happy';setTimeout(()=>{if(flight.running)flight.bird.face='normal'},400);flapSound()}
+window.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='ArrowUp')&&flight.running){e.preventDefault();jump()}});
+function spawnItem(){
+  const isBomb=Math.random()<.30, r=isBomb?22:18;
+  flight.items.push({x:W()+r+10,y:70+Math.random()*Math.max(100,H()-230),r,isBomb,rot:0,pulse:0});
+}
+function burst(x,y,bomb=false){
+  for(let i=0;i<(bomb?38:20);i++){
+    const ang=Math.random()*Math.PI*2,sp=80+Math.random()*250;
+    flight.particles.push({x,y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:.65+Math.random()*.5,max:.9,r:2+Math.random()*4,bomb});
+  }
+}
+function hit(a,b){const dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)<a.r+b.r-7}
+function updateBirdSVG(b){
+  const el=$('birdSprite');
+  if(!el)return;
+  el.style.left=(b.x-42)+'px';
+  el.style.top=(b.y-42)+'px';
+  const rot=Math.max(-22,Math.min(22,b.vy*.045));
+  el.style.transform=`rotate(${rot}deg)`;
+  el.classList.toggle('dazed',b.face==='scared');
+}
+function drawItem(it,t){
+  ctx.save();ctx.translate(it.x,it.y);it.rot+=.045;ctx.rotate(it.rot);
+  if(it.isBomb){
+    const pulse=1+Math.sin(t*.012)*.09;ctx.scale(pulse,pulse);
+    ctx.shadowColor='rgba(239,75,75,.5)';ctx.shadowBlur=20;ctx.fillStyle='#28233d';ctx.beginPath();ctx.arc(0,0,it.r,0,Math.PI*2);ctx.fill();ctx.shadowColor='transparent';
+    ctx.strokeStyle='#ff8d3d';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(12,-17);ctx.quadraticCurveTo(22,-31,31,-20);ctx.stroke();
+    ctx.fillStyle='#ffca3a';ctx.beginPath();ctx.arc(32,-21,4,0,Math.PI*2);ctx.fill();
+  }else{
+    ctx.shadowColor='rgba(255,214,64,.75)';ctx.shadowBlur=22;ctx.fillStyle='#FFD43B';
+    ctx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?it.r*.45:it.r;const x=Math.cos(a)*rr,y=Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill();
+    ctx.shadowColor='transparent';ctx.fillStyle='#fff';ctx.globalAlpha=.85;ctx.beginPath();ctx.arc(-5,-7,4,0,Math.PI*2);ctx.fill();
+  }ctx.restore();
+}
+function flightLoop(now){
+  if(!flight.running)return;
+  if(state.paused){flight.last=now;requestAnimationFrame(flightLoop);return}
+  const dt=Math.min((now-flight.last)/1000,.035);flight.last=now;
+  const elapsed=(now-flight.start)/1000,remain=Math.max(0,10-elapsed);
+  $('flightTime').textContent=faDigits(Math.ceil(remain));$('flightTimer').style.width=(remain/10*100)+'%';
+  flight.bird.vy+=1050*dt;flight.bird.y+=flight.bird.vy*dt;flight.bird.blink+=dt;
+  if(flight.bird.y<45){flight.bird.y=45;flight.bird.vy=0}
+  if(flight.bird.y>H()-95){flight.bird.y=H()-95;flight.bird.vy=-120}
+  flight.spawn-=dt;if(flight.spawn<=0){spawnItem();flight.spawn=.55+Math.random()*.75}
+  for(let i=flight.items.length-1;i>=0;i--){
+    const it=flight.items[i];it.x-=230*dt;
+    if(hit(flight.bird,it)){
+      burst(it.x,it.y,it.isBomb);flight.items.splice(i,1);
+      if(it.isBomb){state.hearts=Math.max(0,state.hearts-1);updateHUD();explosionSound();flight.bird.face='scared';$('flightStage').classList.remove('shake');void $('flightStage').offsetWidth;$('flightStage').classList.add('shake');
+        setTimeout(()=>{if(flight.running)flight.bird.face='normal'},1000);
+        if(state.hearts<=0){endGame();return}
+      }else{state.score+=5;updateHUD();starSound();burst(it.x,it.y,false)}
+    }else if(it.x<-60)flight.items.splice(i,1);
+  }
+  for(let i=flight.particles.length-1;i>=0;i--){const p=flight.particles[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=300*dt;if(p.life<=0)flight.particles.splice(i,1)}
+  ctx.clearRect(0,0,W(),H());for(const it of flight.items)drawItem(it,now);
+  for(const p of flight.particles){ctx.save();ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.bomb?'#ff6b35':'#ffd43b';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.restore()}
+  updateBirdSVG(flight.bird);
+  if(elapsed>=10){flight.running=false;startQuestion();return}
+  requestAnimationFrame(flightLoop);
+}
+
+/* ---------- مدیریت سؤال ---------- */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function prepareQuestions(){state.questions=shuffle(bank.map(x=>({...x,o:[...x.o],a:Number.isInteger(x.a)?x.a:x.o.indexOf(x.c)}))).slice(0,TOTAL_QUESTIONS)}
+function updateHUD(){
+  $('score').textContent=faDigits(state.score);
+  $('heartBox').innerHTML=[0,1,2].map(i=>`<span class="heart ${i>=state.hearts?'lost':''}">❤️</span>`).join('');
+  $('mainProgress').style.width=(state.qIndex/TOTAL_QUESTIONS*100)+'%';
+  $('questionCounter').textContent=`سؤال ${faDigits(Math.min(state.qIndex+1,TOTAL_QUESTIONS))} از ${faDigits(TOTAL_QUESTIONS)}`;
+}
+let qTimer=null,qRemain=60;
+function startQuestion(){
+  if(state.hearts<=0){endGame();return}
+  state.phase='question';state.questionLocked=false;state.qIndex++;
+  if(state.qIndex>TOTAL_QUESTIONS){endGame();return}
+  $('phaseLabel').textContent='📚 مرحلهٔ سؤال';$('flightStage').style.display='none';$('questionArea').style.display='flex';
+  $('qNumber').textContent=`سؤال ${faDigits(state.qIndex)} از ${faDigits(TOTAL_QUESTIONS)}`;
+  updateHUD();musicStart();
+  const q=state.questions[state.qIndex-1];$('questionText').textContent=q.q;
+  $('explain').style.display='none';$('nextBtn').classList.add('hidden');$('nextBtn').textContent=state.qIndex===TOTAL_QUESTIONS?'🏆 پایان بازی':'🚀 ادامه';
+  const box=$('options');box.innerHTML='';
+  const opts=shuffle(q.o.map((text,i)=>({text,i})));
+  opts.forEach(item=>{const b=document.createElement('button');b.className='option';b.textContent=item.text;b.addEventListener('click',()=>answer(item.i,b));box.appendChild(b)});
+  qRemain=60;$('questionTime').textContent=faDigits(qRemain);$('questionTimer').style.width='100%';
+  clearInterval(qTimer);qTimer=setInterval(()=>{if(state.paused||state.questionLocked)return;qRemain--; $('questionTime').textContent=faDigits(Math.max(0,qRemain));$('questionTimer').style.width=(qRemain/60*100)+'%';if(qRemain<=0){clearInterval(qTimer);answer(-1,null)}},1000);
+}
+function answer(index,clicked){
+  if(state.questionLocked)return;state.questionLocked=true;clearInterval(qTimer);
+  const q=state.questions[state.qIndex-1],buttons=[...document.querySelectorAll('.option')];
+  buttons.forEach(b=>b.disabled=true);buttons[q.a].classList.add('correct');
+  if(index===q.a){state.score+=10;correctSound()}else{
+    state.hearts=Math.max(0,state.hearts-1);wrongSound();if(clicked)clicked.classList.add('wrong');
+    state.mistakes.push({n:state.qIndex,q:q.q,student:index<0?'اتمام زمان':q.o[index],right:q.o[q.a],e:q.e});
+    if(state.hearts<=0){updateHUD();setTimeout(endGame,900);return}
+  }
+  updateHUD();$('explain').innerHTML=`💡 <b>نکته:</b> ${q.e}`;$('explain').style.display='block';$('nextBtn').classList.remove('hidden');
+}
+$('nextBtn').addEventListener('click',()=>{if(state.qIndex>=TOTAL_QUESTIONS)endGame();else resetFlight()});
+
+/* ---------- کنترل‌ها ---------- */
+function beginGame(){
+  ensureAudio();state.name=$('studentName').value.trim()||'دوست دانش‌آموز';state.score=0;state.hearts=3;state.qIndex=0;state.mistakes=[];state.paused=false;prepareQuestions();
+  showScreen('gameScreen');updateHUD();resetFlight();
+}
+function endGame(){
+  flight.running=false;clearInterval(qTimer);musicStop();$('flightStage').style.display='none';$('questionArea').style.display='none';
+  $('endName').textContent=state.name;$('finalScore').textContent=faDigits(state.score);
+  const box=$('mistakes');box.innerHTML='';
+  if(!state.mistakes.length)box.innerHTML='<div class="error-item" style="border-right-color:var(--green)">🎉 هیچ پاسخ اشتباهی ثبت نشد! عالی بود.</div>';
+  else state.mistakes.forEach(m=>{const d=document.createElement('div');d.className='error-item';d.innerHTML=`<b>سؤال ${faDigits(m.n)}:</b> ${escapeHTML(m.q)}<br><span class="student">پاسخ دانش‌آموز: ${escapeHTML(m.student)}</span><br><span class="right">پاسخ درست: ${escapeHTML(m.right)}</span><br><span>📘 ${escapeHTML(m.e)}</span>`;box.appendChild(d)});
+  showScreen('endScreen');
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function togglePause(){
+  if($('gameScreen').classList.contains('active')&&!state.questionLocked){state.paused=!state.paused;$('pauseModal').classList.toggle('show',state.paused);$('pauseBtn').textContent=state.paused?'▶️':'⏸️'}
+}
+$('startBtn').addEventListener('click',beginGame);
+$('lessonBtn').addEventListener('click',()=>showScreen('lessonScreen'));
+$('lessonBack').addEventListener('click',()=>showScreen('startScreen'));
+$('lessonPlay').addEventListener('click',()=>{if(!$('studentName').value.trim())$('studentName').value='دوست دانش‌آموز';beginGame()});
+$('restartBtn').addEventListener('click',beginGame);
+$('endLessonBtn').addEventListener('click',()=>showScreen('lessonScreen'));
+$('pauseBtn').addEventListener('click',togglePause);
+$('resumeBtn').addEventListener('click',()=>{state.paused=false;$('pauseModal').classList.remove('show');$('pauseBtn').textContent='⏸️'});
+$('soundBtn').addEventListener('click',()=>{state.sound=!state.sound;$('soundBtn').textContent=state.sound?'🔊':'🔇';if(!state.sound)musicStop();else musicStart()});
+$('flightStage').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&$('gameScreen').classList.contains('active')){e.preventDefault();if(state.phase==='flight')jump();else if(e.key===' '&&!state.paused){}}
+if(e.key==='Escape'&&state.paused)togglePause()});
+window.addEventListener('pointerdown',ensureAudio,{once:true});
+</script>
+</body>
+</html>
